@@ -2,16 +2,16 @@ import { CardDataBasket } from '../Partial/Card';
 import { HeaderData } from '../Common/Header';
 
 export interface BasketData {
-	tickets: CardDataBasket[];
+	products: CardDataBasket[];
 	isActive: boolean;
 	header: HeaderData;
-	isDisabled: boolean;
 	total: string;
 }
 
 export interface BasketSettings {
+	productList: string;
+	total: string;
 	onRemove: (id: string) => void;
 	onClose: () => void;
 	onNext: () => void;
-	onBack: () => void;
 }

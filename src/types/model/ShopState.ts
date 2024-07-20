@@ -10,11 +10,11 @@ export enum AppStateModals {
 }
 
 export enum AppStateChanges {
-	modal = 'change:modal',
-	modalMessage = 'change:modalMessage',
-  selectedProduct = 'change:selectedProduct',
+	openModal = 'change:modal',
+	setModalMessage = 'change:modalMessage',
+  selectProduct = 'change:selectedProduct',
   orderData = 'change:orderData',
-	basket = 'change:basket',
+	openBasket = 'change:basket',
 	order = 'change:order',
 }
 

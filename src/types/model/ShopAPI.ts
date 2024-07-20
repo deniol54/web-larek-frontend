@@ -29,21 +29,11 @@ export interface Product {
 }
 
 export interface UserData {
-  _email: string;
-  _phoneNumber: string;
-  _address: string;
-  _payType: PayType;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  payType: PayType;
 
-  set payType(payType: string);
-
-  set phoneNumber(number:string);
-
-  set address(address:string);
-
-  set email(email:string);
-  
-
-  reset():void;
 }
 
 export interface Order extends UserData {
@@ -57,27 +47,12 @@ export interface OrderResult {
 
 export interface ProductBasket {
   products: Product[];
-  _basketPrice: number;
-  _basketCount: number;
-  
-  addProduct(product: Product):void;
-
-  removeProduct(product: Product): void;
-
-  reset():void;
-
-  getListOfProducts():string[];
-
-  get basketCount():number;
-
-  get basketPrice():number;
+  basketPrice: number;
+  basketCount: number;
 }
 
 export interface Catalog {
   products: Product[];
-
-  fillCatalog(products: Product[]): void;
-  getCatalog(): Product[] | null;
 }
 
 export interface IShopAPI {
