@@ -13,31 +13,26 @@ export enum PayType {
   offline = 'При получении'
 }
 
-export type ApiListResponse<Type> = {
-	total: number;
-	items: Type[];
-};
-
 
 export interface Product {
-  productId: string;
-  productType: ProductCategory;
-  productTitle: string;
-  productImage: string;
-  productPrice: Number;
-  productDescription: string;
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: ProductCategory;
+  price: Number;
 }
 
 export interface UserData {
+  payment: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   address: string;
-  payType: PayType;
-
 }
 
 export interface Order extends UserData {
-	products: Product[];
+  total: number,
+	items: string[];
 }
 
 export interface OrderResult {
@@ -58,7 +53,7 @@ export interface Catalog {
 export interface IShopAPI {
 	getProducts: () => Promise<Product[]>;
   getCertainProduct: (productId: string) => Promise<Product>;
-	orderProducts: (order: Order) => Promise<OrderResult[]>;
+	orderProducts: (order: Order) => Promise<OrderResult>;
 }
 
 
