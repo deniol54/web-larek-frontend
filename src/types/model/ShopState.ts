@@ -1,4 +1,4 @@
-import { Catalog, ProductBasket, UserData, Order, OrderResult,IShopAPI } from './ShopAPI';
+import { Catalog, ProductBasket, UserData, Order, OrderResult,IShopAPI, Product } from './ShopAPI';
 
 export enum AppStateModals {
 	product = 'modal:product',
@@ -19,6 +19,7 @@ export enum AppStateChanges {
 }
 
 export interface ShopState {
+	selectedProduct: Product;
   catalog: Catalog;
   basket: ProductBasket;
   userData: UserData;
@@ -30,7 +31,7 @@ export interface ShopState {
 	isError: boolean;
 
   loadProducts(): Promise<void>;
-	orderProducts(): Promise<OrderResult[]>;
+	orderProducts(): Promise<OrderResult>;
 
   selectProduct(id: string): void;
   removeProduct(id: string): void;
@@ -49,5 +50,5 @@ export interface AppStateSettings {
 
 // Конструктор модели данных
 export interface AppStateConstructor {
-	new (api: IShopAPI, settings: AppStateSettings): ShopState;
+	new (api: IShopAPI, settings?: AppStateSettings): ShopState;
 }

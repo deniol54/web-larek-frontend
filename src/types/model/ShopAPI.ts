@@ -9,8 +9,8 @@ export enum ProductCategory{
 }
 
 export enum PayType {
-  online = 'Онлайн',
-  offline = 'При получении'
+  online = 'online',
+  offline = 'offline'
 }
 
 
@@ -20,7 +20,7 @@ export interface Product {
   image: string;
   title: string;
   category: ProductCategory;
-  price: Number;
+  price: number;
 }
 
 export interface UserData {

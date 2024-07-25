@@ -10,7 +10,7 @@ export interface CardData {
 }
 
 export interface CardDataModal extends CardData {
-  text: string;
+  description: string;
 }
 
 export interface CardDataBasket {
@@ -25,6 +25,6 @@ export interface CardSettings extends IClickable<string> {
   category: string;
   price: string;
   text: string;
-  isModal: boolean;
-  isBasket: boolean;
+  cardModal: string;
+  cardBasket: string;
 }
