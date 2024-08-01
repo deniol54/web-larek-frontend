@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 
-import { ShopAPI } from './components/model/ShopAPI';
+import { ShopAPI } from '@/components/model/ShopAPI';
 import { API_URL, CDN_URL, settings } from './utils/constants';
 import { ShopStateModel } from './components/model/ShopState';
 import { MainScreen } from './components/view/screen/Main';
