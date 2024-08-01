@@ -2,7 +2,7 @@ import { IClickable } from '../../base/View';
 
 export interface HeaderData {
 	title: string;
-	description: string;
+	description?: string;
 	action?: string;
 }
 

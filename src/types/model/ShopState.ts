@@ -3,9 +3,9 @@ import { Catalog, ProductBasket, UserData, Order, OrderResult,IShopAPI, Product 
 export enum AppStateModals {
 	product = 'modal:product',
 	basket = 'modal:basket',
-  address = 'modal:address',
-	contacts = 'modal:contacts',
-	success = 'modal:success',
+  // address = 'modal:address',
+	// contacts = 'modal:contacts',
+	// success = 'modal:success',
 	none = 'modal:none',
 }
 
@@ -44,6 +44,8 @@ export interface ShopState {
 
 // Настройки модели данных
 export interface AppStateSettings {
+	formatCurrency: (value: number) => string;
+	storageKey: string;
 	// Функция, которая будет вызываться при изменении состояния
 	onChange: (changed: AppStateChanges) => void;
 }

@@ -1,7 +1,7 @@
 import { View } from '../../base/view';
-import { IClickableEvent } from '@/types/base/View';
-import { ElementCreator } from '@/types/html';
-import { createElement } from '@/utils/html';
+import { IClickableEvent } from  '../../../types/base/View';
+import { ElementCreator } from '../../../types/html';
+import { createElement } from '../../../utils/html';
 
 import {
 	ButtonData,

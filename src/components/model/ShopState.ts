@@ -1,6 +1,6 @@
 
 import { Catalog, Order, ProductBasket, UserData, Product, IShopAPI, OrderResult } from '../../types/model/ShopAPI';
-import { AppStateModals, AppStateSettings, ShopState } from '../../types/model/ShopState';
+import { AppStateModals,AppStateChanges, AppStateSettings, ShopState } from '../../types/model/ShopState';
 
 export class ShopStateModel implements ShopState{
   catalog: Catalog = {
@@ -79,7 +79,9 @@ export class ShopStateModel implements ShopState{
   }
 
   removeProduct(id: string): void {
-    
+    this.basket.products.filter(el => {
+      return el.id !== id;
+    });
   }
 
   fillUserData(contacts: Partial<UserData>): void {
@@ -101,8 +103,24 @@ export class ShopStateModel implements ShopState{
   }
 
   openModal(modal: AppStateModals): void {
-    
-  }
+		// switch (modal) {
+		// 	case AppStateModals.contacts:
+		// 		if (this.basket.basketCount === 0) {
+		// 			throw new Error(`No tickets selected`);
+		// 		}
+		// 		break;
+		// }
+		if (this.openedModal !== modal) {
+			this.openedModal = modal;
+			this.notifyChanged(AppStateChanges.openModal);
+      console.log(this.openedModal);
+      console.log(this.settings);
+		}
+	}
+
+  protected notifyChanged(changed: AppStateChanges): void {
+		this.settings.onChange(changed);
+	}
 
   setMessage(message: string | null, isError: boolean = false): void {
     this.modalMessage = message;

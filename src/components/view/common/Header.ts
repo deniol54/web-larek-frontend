@@ -3,7 +3,7 @@ import { View } from '../../base/view';
 import {
 	HeaderData,
 	HeaderSettings,
-} from '@/types/view/Common/Header';
+} from '../../../types/view/Common/Header';
 
 /**
  * Шапка с заголовком, описанием и каким-то действием, например, кнопкой "назад".

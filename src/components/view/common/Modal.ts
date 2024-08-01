@@ -1,16 +1,16 @@
 import { View } from '../../base/view';
 
-import { ModalData, ModalSettings } from '@/types/view/Common/Modal';
+import { ModalData, ModalSettings } from '../../../types/view/Common/Modal';
 
 /**
  * Отображение модального окна
  */
-export class ModalView<H, C> extends View<
-	ModalData<H, C>,
-	ModalSettings<H, C>
+export class ModalView<C> extends View<
+	ModalData<C>,
+	ModalSettings<C>
 > {
 	// модальное окно, которое сейчас открыто, оно всегда одно
-	protected static _openedModal: ModalView<unknown, unknown> | null;
+	protected static _openedModal: ModalView<unknown> | null;
 
 	protected init() {
 		// слушаем клик по иконке закрыть
@@ -21,7 +21,6 @@ export class ModalView<H, C> extends View<
 		// клик по оверлею тоже закрывает модальное окно
 		this.element.addEventListener('click', this.onCloseHandler.bind(this));
 		// добавляем в подвал кнопки из настроек
-		this.ensure(this.settings.footer).prepend(...this.settings.actions);
 	}
 
 	protected onCloseHandler(event?: MouseEvent) {
@@ -55,16 +54,9 @@ export class ModalView<H, C> extends View<
 	}
 
 	// Проброс данных во вложенные отображения
-	set header(data: H | undefined) {
-		if (data) {
-			this.setValue(
-				this.settings.header,
-				this.settings.headerView.render(data)
-			);
-			this.setVisibility(this.settings.header, true);
-		} else {
-			this.setVisibility(this.settings.header, false);
-		}
+
+	set title(value: string) {
+		this.setValue(this.settings.title, value);
 	}
 
 	set content(data: C) {

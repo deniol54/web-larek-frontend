@@ -19,6 +19,12 @@ export interface CardDataBasket {
   price: number;
 }
 
+export interface CardDataBasketSettings extends IClickable<string> {
+	title: string;
+  price: string;
+  delete: string;
+}
+
 export interface CardSettings extends IClickable<string> {
 	image: string;
 	title: string;

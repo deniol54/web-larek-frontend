@@ -13,6 +13,7 @@ export class PageView extends View<PageData, PageSettings> {
 	}
 
 	onClickHandler(event: MouseEvent) {
+		console.log(event);
 		this.settings.onClick({ event });
 	}
 
