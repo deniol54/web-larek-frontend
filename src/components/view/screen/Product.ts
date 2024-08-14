@@ -12,18 +12,32 @@ import { CardDataModal } from '../../../types/view/Partial/Card';
 import { CardDataModalView } from '../partial/Card';
 import { HeaderData } from '@/types/view/Common/Header';
 import { HeaderView } from '../common/Header';
+import { ElementCreator } from '@/types/html';
 
 
 export class ProductScreen extends ModalScreen<
+	never,	
 	CardDataModal,
 	ProductData,
 	ProductSettings
 > {
 
+	initHeader (): undefined {
+		return ;
+	}
+
 	initContent() {
+
+		// const nextButton = { 
+		// 	nextLabel : settings.productModal.nextLabel,
+		// 	nextSettings: <ElementCreator>settings.productModal.nextSettings
+		// }
+
+		// this.nextButton = this.getNextButton(nextButton,this.settings.onNext);
+
 		return new CardDataModalView(cloneTemplate(settings.cardModalTemplate), {
 			...settings.cardSettings,
-      onClick: this.settings.onClose
+      onClick: this.onRemoveProduct.bind(this),
 		});
 	}
 
@@ -32,25 +46,12 @@ export class ProductScreen extends ModalScreen<
 		  this.settings.onNext();
 	}
 
-	set image(value: string) {
-		console.log(this.modal);
-
-		this.modal.content.image = value;
+	set product(value: CardDataModal) {
+		this.modal.content = value;
 	}
 
 	set title(value: string) {
 		this.modal.content.title = value;
 	}
-	set category(value: ProductCategory) {
-		this.modal.content.category = value;
-	}
-	set price(value: number) {
-		this.modal.content.price = value;
-	}
-	set description(value: string) {
-		this.modal.content.description = value;
-	}
-	// set total(total: string) {
-	// 	this.modal.message = `${total} ${settings.basketModal.totalLabel}`;
-	// }
+	
 }

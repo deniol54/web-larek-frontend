@@ -18,7 +18,6 @@ import { CardData } from '@/types/view/Partial/Card';
  */
 export class MainScreen extends Screen<MainData, MainSettings> {
 	protected declare gallery: ListView<CardData>;
-	// protected declare hero: HeroView<FilmItem>;
 	public declare page: PageView;
 
 	protected init() {

@@ -17,6 +17,15 @@ export class ListView<T extends ItemData> extends View<
 	// Сохраняем элементы в объекте, где ключ - id элемента
 	protected _elements: ElementsMap;
 
+	protected _listElement: HTMLElement;
+	init() {
+		this._listElement = this.element;
+	}
+
+	setListElement(element: HTMLElement) {
+		this._listElement = element;
+	}
+
 	/**
 	 * Устанавливаем активный элемент
 	 */
@@ -52,6 +61,7 @@ export class ListView<T extends ItemData> extends View<
 			result[item.id] = el.render(item);
 			return result;
 		}, {});
-		this.setValue(this.element, Object.values(this._elements));
+
+		this.setValue(this._listElement, Object.values(this._elements));
 	}
 }

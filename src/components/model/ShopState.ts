@@ -69,19 +69,32 @@ export class ShopStateModel implements ShopState{
     }
   }
 
+  pushProduct2Basket() {
+    if (!this.basket.products.includes(this.selectedProduct)){
+      this.basket.basketCount++;
+      this.basket.basketPrice += this.selectedProduct.price;
+      this.basket.products.push(this.selectedProduct);
+    }
+    this.notifyChanged(AppStateChanges.openBasket);
+  }
+
   selectProduct(id: string): void {
     const findRes = this.catalog.products.filter(el=>el.id===id);
     if (!findRes.length) {
-			throw new Error(`Invalid movie id: ${id}`);
+			throw new Error(`Invalid products id: ${id}`);
 		}
     else 
       this.selectedProduct = findRes[findRes.length-1];
   }
 
   removeProduct(id: string): void {
-    this.basket.products.filter(el => {
+    this.basket.products = this.basket.products.filter(el => {
       return el.id !== id;
     });
+    const findRes = this.catalog.products.filter(el=>el.id===id);
+    this.basket.basketPrice -= findRes[findRes.length-1].price;
+    this.basket.basketCount -=1;
+    this.notifyChanged(AppStateChanges.openBasket);
   }
 
   fillUserData(contacts: Partial<UserData>): void {

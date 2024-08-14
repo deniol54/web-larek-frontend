@@ -1,3 +1,5 @@
+import { ProductCategory } from "@/types/model/ShopAPI";
+
 export const API_URL = `${process.env.API_ORIGIN}/api/weblarek`;
 export const CDN_URL = `${process.env.API_ORIGIN}/content/weblarek`;
 
@@ -13,6 +15,7 @@ export const settings = {
   gallerySettings: {
 		itemClass: 'gallery__item',
 	},
+
   cardTemplate: '#card-catalog',
 	cardModalTemplate: '#card-preview',
   cardSettings: {
@@ -28,22 +31,29 @@ export const settings = {
   cardBasketSettings: {
     title: '.card__title',
     price: '.card__price',
-    delete: '.basket__item-delete'
+    delete: '.basket__item-delete',
+		index: '.basket__item-index',
   },
 
   modalTemplate: '#modal',
   modalSettings: {
 		close: '.modal__close',
 		content: '.modal__content',
-		title: '.modal__title',
+		header: '.modal__title',
+		footer: '.modal__actions',
 		activeClass: 'modal_active',
 		message: '',
 		messageErrorClass: 'modal__message_error',
 	},
 
+	productModal: {
+		nextLabel: 'В корзину',
+		nextSettings: ['button', {className: 'button card__button'}],
+	},
 
 
   basketModal: {
+		headerTitle: 'Корзина',
     totalLabel: 'синапсов',
 		nextLabel: 'Оформить',
 		nextSettings: ['button', { className: 'button' }],

@@ -34,6 +34,7 @@ export interface ShopState {
 	orderProducts(): Promise<OrderResult>;
 
   selectProduct(id: string): void;
+	pushProduct2Basket(): void;
   removeProduct(id: string): void;
 	fillUserData(contacts: Partial<UserData>): void;
 	isValidContacts(): boolean;

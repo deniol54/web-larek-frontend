@@ -7,6 +7,7 @@ export class ProductController extends Controller<ShopState> {
 		this.model.openModal(AppStateModals.product);
 	};
 	onNext = () => {
+		this.model.pushProduct2Basket();
 		this.model.openModal(AppStateModals.basket);
 	};
 	onClose = () => {

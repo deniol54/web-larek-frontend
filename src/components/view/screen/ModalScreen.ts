@@ -12,34 +12,37 @@ import { ModalScreenSettings } from '../../../types/view/Screen/ModalScreen';
  * Общая логика и структура модальных окон
  */
 export abstract class ModalScreen<
+	H, // данные для заголовка
 	M, // внутренние данные для контента модального окна
 	C, // внешние данные для экрана
 	S extends ModalScreenSettings // настройки экрана (обработчики событий
 > extends Screen<C, S> {
 	// модальное окно
-	protected declare modal: ModalView<M>;
+	protected declare modal: ModalView<H, M>;
 	// кнопка "Далее"
 	protected declare nextButton: HTMLButtonElement;
 
 	// Абстрактные методы для реализации в дочерних классах
 
+	abstract initHeader(): IView<H>;
 
 	abstract initContent(): IView<M>;
 
 	// Переопределенный init() для инициализации модального окна
 	protected init() {
-    const curSettings = {
-      nextLabel: settings.basketModal.nextLabel,
-      nextSettings: <ElementCreator>settings.basketModal.nextSettings
-    }
+		const curSettings = {
+			nextLabel: settings.basketModal.totalLabel,
+			nextSettings: <ElementCreator> settings.basketModal.nextSettings,
+
+		}
 		this.nextButton = this.getNextButton(
 			curSettings,
 			this.settings.onNext
 		);
 
-
 		this.modal = this.getModalView(
 			{
+				headerView: this.initHeader(),
 				contentView: this.initContent(),
 			},
 			this.settings.onClose
@@ -62,12 +65,12 @@ export abstract class ModalScreen<
 	}
 
 	protected getModalView(
-		setting: { contentView: IView<M> },
+		settings_: { headerView: IView<H>; contentView: IView<M> },
 		onClose: () => void
 	) {
-		return new ModalView<M>(cloneTemplate(settings.modalTemplate), {
+		return new ModalView<H, M>(cloneTemplate(settings.modalTemplate), {
 			...settings.modalSettings,
-			...setting,
+			...settings_,
 			actions: [this.nextButton],
 			onClose,
 		});
@@ -75,9 +78,9 @@ export abstract class ModalScreen<
 
 	// Методы установки данных
 
-	// set header(value: H) {
-	// 	this.modal.header = value;
-	// }
+	set header(value: H) {
+		this.modal.header = value;
+	}
 
 	set content(value: M) {
 		this.modal.content = value;

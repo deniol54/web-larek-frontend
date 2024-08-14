@@ -1,11 +1,19 @@
 // Данные
 
-export enum ProductCategory{
+export enum ProductCategory {
   soft = 'софт-скил',
   other = 'другое',
   additional = 'дополнительное',
   button = 'кнопка',
   hard = 'хард-скил'
+}
+
+export enum ProductCategoryReverse {
+  'софт-скил' = 'soft',
+  'другое' = 'other',
+  'дополнительное' = 'additional',
+  'кнопка' = 'button',
+  'хард-скил'= 'hard'
 }
 
 export enum PayType {

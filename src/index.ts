@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 
-import { ShopAPI } from '@/components/model/ShopAPI';
+import { ShopAPI } from './components/model/ShopAPI';
 import { API_URL, CDN_URL, settings } from './utils/constants';
 import { ShopStateModel } from './components/model/ShopState';
 import { MainScreen } from './components/view/screen/Main';
@@ -13,6 +13,7 @@ import { BasketController } from './components/controller/Basket';
 import { ModalChange } from './types/model/ShopStateEmmiter';
 import { ProductScreen } from './components/view/screen/Product';
 import { ProductController } from './components/controller/Product';
+import { ProductCategory } from './types/model/ShopAPI';
 
 
 const api = new ShopAPI(CDN_URL, API_URL);
@@ -40,6 +41,7 @@ app.on(AppStateChanges.openBasket, () => {
 	modal[AppStateModals.basket].products = Array.from(
 		app.model.basket.products
 	);
+	modal[AppStateModals.basket].total = String(app.model.basketTotal);
 });
 
 app.on(AppStateModals.basket, () => {
@@ -52,11 +54,7 @@ app.on(AppStateModals.basket, () => {
 
 app.on(AppStateModals.product, () => {
 	modal[AppStateModals.product].render({
-		image: app.model.selectedProduct.image,
-		title: app.model.selectedProduct.title,
-		category: app.model.selectedProduct.category,
-		price: app.model.selectedProduct.price,
-		description: app.model.selectedProduct.description,
+		product: app.model.selectedProduct,
 		isActive: true,
 	})
 })
@@ -64,6 +62,17 @@ app.on(AppStateModals.product, () => {
 
 app.model.loadProducts().then(()=>{
   main.items = app.model.catalog.products;
-	app.model.basket.products.push(app.model.catalog.products[0]);
 });
+
+// app.model.catalog.products.push({
+// 	price: 100,
+// 	id: '1',
+// 	title: 'dad',
+// 	category: ProductCategory.additional,
+// 	description: 'dsd',
+// 	image: 'D:\\Prog\\4course\fullstack\dev\web-larek-frontend\src\images\Subtract.png',
+
+// });
+// main.items = app.model.catalog.products;
+// app.model.basket.products.push(app.model.catalog.products[0]);
 

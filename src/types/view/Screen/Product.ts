@@ -1,13 +1,7 @@
-import { CardDataBasket } from '../Partial/Card';
-import { ProductCategory } from '../../model/ShopAPI';
+import { Product } from '../../model/ShopAPI';
 
 export interface ProductData {
-	id: string;
-	image: string;
-	title: string;
-  category: ProductCategory;
-  price: number;
-  description: string;
+	product: Product,
 	isActive: boolean
 }
 

@@ -23,6 +23,7 @@ export interface CardDataBasketSettings extends IClickable<string> {
 	title: string;
   price: string;
   delete: string;
+  index: string;
 }
 
 export interface CardSettings extends IClickable<string> {
