@@ -43,19 +43,12 @@ import { View } from '../../base/view';
 // }
 
 export class BasketScreen extends ModalScreen<
-	HeaderData,
 	ListData<CardDataBasket>,
 	BasketData,
 	BasketSettings
 > {
-	protected _basket: HTMLElement;
+	// protected _basket: HTMLElement;
 
-	initHeader() {
-		return new HeaderView(cloneTemplate(settings.basketTemplate), {
-			...settings.basketSettings,
-			onClick: null,
-		});
-	}
 
 	initContent() {
 		const list = new ListView<CardDataBasket>(cloneTemplate(settings.basketTemplate), {
@@ -67,6 +60,7 @@ export class BasketScreen extends ModalScreen<
 		});
 		list.setListElement(list.element.querySelector(settings.basketSettings.content));
 		this.nextButton = list.element.querySelector(settings.basketSettings.action);
+		this.nextButton.addEventListener('click', this.onGoToOrder.bind(this));
 		return list;
 		// return new BasketView(cloneTemplate(settings.basketTemplate),{
 		// 	...settings.basketSettings,

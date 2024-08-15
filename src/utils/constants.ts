@@ -1,4 +1,4 @@
-import { ProductCategory } from "@/types/model/ShopAPI";
+import { PayType, ProductCategory } from "@/types/model/ShopAPI";
 
 export const API_URL = `${process.env.API_ORIGIN}/api/weblarek`;
 export const CDN_URL = `${process.env.API_ORIGIN}/content/weblarek`;
@@ -67,6 +67,14 @@ export const settings = {
 		action: '.basket__button',
 		itemClass: '.basket__item',
 		message: '.basket__price',
+	},
+
+	orderTemplate: '#order',
+	orderSettings: {
+		address: 'input[name=address]',
+		payment: '.button_alt',
+		activeButton: 'button_alt-active',
+		action: '.order__button',
 	},
   appState: {
 		formatCurrency: (value: number) => `${value} руб.`,

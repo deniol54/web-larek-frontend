@@ -14,7 +14,8 @@ import { ModalChange } from './types/model/ShopStateEmmiter';
 import { ProductScreen } from './components/view/screen/Product';
 import { ProductController } from './components/controller/Product';
 import { ProductCategory } from './types/model/ShopAPI';
-
+import { OrderFormScreen } from './components/view/screen/OrderForm';
+import { OrderController } from './components/controller/Order';
 
 const api = new ShopAPI(CDN_URL, API_URL);
 const app = new AppStateEmitter(api, settings.appState, ShopStateModel);
@@ -23,7 +24,7 @@ const main = new MainScreen(new MainController(app.model));
 const modal = {
 	[AppStateModals.basket]: new BasketScreen(new BasketController(app.model)),
 	[AppStateModals.product]: new ProductScreen(new ProductController(app.model)),
-	
+	[AppStateModals.address]: new OrderFormScreen(new OrderController(app.model)),
 };
 
 
@@ -41,7 +42,7 @@ app.on(AppStateChanges.openBasket, () => {
 	modal[AppStateModals.basket].products = Array.from(
 		app.model.basket.products
 	);
-	modal[AppStateModals.basket].total = String(app.model.basketTotal);
+	modal[AppStateModals.basket].total = String(app.model.basket.basketPrice);
 });
 
 app.on(AppStateModals.basket, () => {
@@ -59,6 +60,20 @@ app.on(AppStateModals.product, () => {
 	})
 })
 
+
+app.on(AppStateModals.address, () => {
+	modal[AppStateModals.address].render({
+		contacts:app.model.userData,
+		isActive: true,
+	})
+})
+
+app.on(AppStateChanges.orderData, () => {
+	modal[AppStateModals.address].render({
+		contacts:app.model.userData,
+		isActive: true,
+	})
+})
 
 app.model.loadProducts().then(()=>{
   main.items = app.model.catalog.products;

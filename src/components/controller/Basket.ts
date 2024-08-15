@@ -6,7 +6,7 @@ export class BasketController extends Controller<ShopState> {
 		this.model.removeProduct(id);
 	};
 	onNext = () => {
-		// this.model.openModal(AppStateModals.contacts);
+		this.model.openModal(AppStateModals.address);
 	};
 	onClose = () => {
 		this.model.openModal(AppStateModals.none);

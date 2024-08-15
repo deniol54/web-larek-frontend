@@ -95,7 +95,10 @@ export class CardDataBasketView extends View<CardDataBasket, CardDataBasketSetti
 
 	set title(value: string) {
 		this.setValue(this.settings.title, value);
-		
+	}
+
+	set index(value: number) {
+		this.setValue(this.settings.index, String(value));
 	}
 
 	set price(value: number) {

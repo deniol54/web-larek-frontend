@@ -70,10 +70,14 @@ export class ShopStateModel implements ShopState{
   }
 
   pushProduct2Basket() {
-    if (!this.basket.products.includes(this.selectedProduct)){
+    if (!this.basket.products.find(el => el.id === this.selectedProduct.id)){
       this.basket.basketCount++;
       this.basket.basketPrice += this.selectedProduct.price;
-      this.basket.products.push(this.selectedProduct);
+      this.basket.products.push(
+        {
+          ...this.selectedProduct,
+          index: this.basketTotal,
+        });
     }
     this.notifyChanged(AppStateChanges.openBasket);
   }
@@ -88,11 +92,18 @@ export class ShopStateModel implements ShopState{
   }
 
   removeProduct(id: string): void {
+    const findRes = this.basket.products.filter(el=>el.id===id);
+    const removedProduct = findRes[findRes.length-1];
+    this.basket.basketPrice -= removedProduct.price;
+    this.basket.products.map(el=>{
+      if(el.index > removedProduct.index){
+        const res = el.index-=1;
+        return res;
+      }
+    });
     this.basket.products = this.basket.products.filter(el => {
       return el.id !== id;
     });
-    const findRes = this.catalog.products.filter(el=>el.id===id);
-    this.basket.basketPrice -= findRes[findRes.length-1].price;
     this.basket.basketCount -=1;
     this.notifyChanged(AppStateChanges.openBasket);
   }
@@ -102,6 +113,7 @@ export class ShopStateModel implements ShopState{
 			...this.userData,
 			...contacts,
 		};
+    this.notifyChanged(AppStateChanges.orderData);
   }
 
   isValidContacts(): boolean {

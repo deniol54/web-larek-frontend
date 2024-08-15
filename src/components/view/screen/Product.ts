@@ -16,15 +16,11 @@ import { ElementCreator } from '@/types/html';
 
 
 export class ProductScreen extends ModalScreen<
-	never,	
 	CardDataModal,
 	ProductData,
 	ProductSettings
 > {
 
-	initHeader (): undefined {
-		return ;
-	}
 
 	initContent() {
 

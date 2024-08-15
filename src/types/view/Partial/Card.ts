@@ -15,6 +15,7 @@ export interface CardDataModal extends CardData {
 
 export interface CardDataBasket {
   id: string;
+  index?: number;
 	title: string;
   price: number;
 }

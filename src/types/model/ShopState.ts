@@ -3,7 +3,7 @@ import { Catalog, ProductBasket, UserData, Order, OrderResult,IShopAPI, Product 
 export enum AppStateModals {
 	product = 'modal:product',
 	basket = 'modal:basket',
-  // address = 'modal:address',
+  address = 'modal:address',
 	// contacts = 'modal:contacts',
 	// success = 'modal:success',
 	none = 'modal:none',

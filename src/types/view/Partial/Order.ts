@@ -2,11 +2,11 @@ import { IChangeable } from '../../base/View';
 import { PayType } from '../../model/ShopAPI';
 
 export interface OrderData {
-	payType: PayType;
+	payment: string;
 	address: string;
 }
 
 export interface OrderSettings extends IChangeable<OrderData> {
-  payType: string;
-	phone: string;
+  payment: string;
+	address: string;
 }

@@ -2,11 +2,11 @@ import { IChangeable } from '../../base/View';
 
 
 export interface ContactsData {
-  phoneNumber: string;
+  phone: string;
 	email: string;
 }
 
 export interface ContactsSettings extends IChangeable<ContactsData> {
-  phoneNumber: string;
+  phone: string;
 	email: string;
 }

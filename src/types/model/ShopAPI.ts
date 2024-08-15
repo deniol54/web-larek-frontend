@@ -17,8 +17,8 @@ export enum ProductCategoryReverse {
 }
 
 export enum PayType {
-  online = 'online',
-  offline = 'offline'
+  online = 'card',
+  offline = 'cash'
 }
 
 
@@ -29,6 +29,7 @@ export interface Product {
   title: string;
   category: ProductCategory;
   price: number;
+  index?: number;
 }
 
 export interface UserData {
