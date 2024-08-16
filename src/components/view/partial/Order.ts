@@ -1,6 +1,5 @@
 import { OrderData, OrderSettings } from "../../../types/view/Partial/Order";
 import { View } from '../../base/view';
-import { PayType } from "../../../types/model/ShopAPI";
 import { settings } from '../../../utils/constants';
 
 export class OrderView extends View<OrderData, OrderSettings> {
@@ -10,7 +9,7 @@ export class OrderView extends View<OrderData, OrderSettings> {
 
   init() {
     const buttons = this.element.querySelectorAll(this.settings.payment);
-    [this._cashButton, this._cardButton] = buttons;
+    [this._cardButton, this._cashButton] = buttons;
     this._cardButton.addEventListener('click', this.onClickHandler.bind(this));
     this._cashButton.addEventListener('click', this.onClickHandler.bind(this));
 		this.element.addEventListener('submit', this.onSubmitHandler.bind(this));
@@ -46,11 +45,11 @@ export class OrderView extends View<OrderData, OrderSettings> {
 		return false;
 	}
 
-	set payType(value: string) {
-    value === 'online' ? this._cardButton.classList.toggle(settings.orderSettings.activeButton) : this._cashButton.classList.toggle(settings.orderSettings.activeButton);
+	set payment(value: string) {
+    value === 'online' ? this._cardButton.classList.add(settings.orderSettings.activeButton) : this._cashButton.classList.add(settings.orderSettings.activeButton);
 	}
 
-	set addres(value: string) {
+	set address(value: string) {
 		this.setValue<HTMLInputElement>(this.settings.address, {
 			value,
 		});

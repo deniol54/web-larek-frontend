@@ -88,6 +88,6 @@ export const settings = {
 
   appState: {
 		formatCurrency: (value: number) => `${value} руб.`,
-		storageKey: '__filmTickets',
+		storageKey: '__shopProducts',
 	},
 };

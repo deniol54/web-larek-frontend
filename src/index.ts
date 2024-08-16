@@ -95,8 +95,18 @@ app.on(AppStateModals.contacts, () => {
 	})
 })
 
+app.on(AppStateChanges.order, () => {
+	modal[AppStateModals.address].render({
+		contacts: app.model.userData,
+	});
+	modal[AppStateModals.contacts].render({
+		contacts: app.model.userData,
+	})
+})
+
 app.model.loadProducts().then(()=>{
   main.items = app.model.catalog.products;
+	app.model.restoreState();
 });
 
 // app.model.catalog.products.push({

@@ -8,6 +8,7 @@ export class OrderController extends Controller<ShopState> {
 		this.model.fillUserData(value);
 	};
 	onNext = () => {
+		this.model.persistState();
 		this.model.openModal(AppStateModals.contacts);
 	};
 	onClose = () => {

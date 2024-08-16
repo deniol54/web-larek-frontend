@@ -18,6 +18,11 @@ export enum AppStateChanges {
 	order = 'change:order',
 }
 
+export type PersistedState = {
+	products: Product[];
+	contacts: UserData;
+};
+
 export interface ShopState {
 	selectedProduct: Product;
   catalog: Catalog;
@@ -35,9 +40,12 @@ export interface ShopState {
 
   selectProduct(id: string): void;
 	pushProduct2Basket(): void;
+	clearBasket(): void;
   removeProduct(id: string): void;
 	fillUserData(contacts: Partial<UserData>): void;
 	isValidContacts(): boolean;
+	persistState(): void;
+	restoreState(): void;
 
   openModal(modal: AppStateModals): void;
   setMessage(message: string | null, isError: boolean): void;

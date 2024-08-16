@@ -1,6 +1,6 @@
 
 import { Catalog, Order, ProductBasket, UserData, Product, IShopAPI, OrderResult } from '../../types/model/ShopAPI';
-import { AppStateModals,AppStateChanges, AppStateSettings, ShopState } from '../../types/model/ShopState';
+import { AppStateModals, PersistedState, AppStateChanges, AppStateSettings, ShopState } from '../../types/model/ShopState';
 
 export class ShopStateModel implements ShopState{
   catalog: Catalog = {
@@ -82,6 +82,12 @@ export class ShopStateModel implements ShopState{
     this.notifyChanged(AppStateChanges.openBasket);
   }
 
+  clearBasket(): void {
+    this.basket.products = [];
+    this.basket.basketPrice = 0;
+    this.basket.basketCount = 0;
+  }
+
   selectProduct(id: string): void {
     const findRes = this.catalog.products.filter(el=>el.id===id);
     if (!findRes.length) {
@@ -128,13 +134,13 @@ export class ShopStateModel implements ShopState{
   }
 
   openModal(modal: AppStateModals): void {
-		// switch (modal) {
-		// 	case AppStateModals.contacts:
-		// 		if (this.basket.basketCount === 0) {
-		// 			throw new Error(`No tickets selected`);
-		// 		}
-		// 		break;
-		// }
+		switch (modal) {
+			case AppStateModals.contacts:
+				if (this.basket.basketCount === 0) {
+					throw new Error(`No tickets selected`);
+				}
+				break;
+		}
 		if (this.openedModal !== modal) {
 			this.openedModal = modal;
 			this.notifyChanged(AppStateChanges.openModal);
@@ -172,6 +178,39 @@ export class ShopStateModel implements ShopState{
 		}
 		return null;
 	}
+
+  persistState(): void {
+		const state: PersistedState = {
+			contacts: this.userData,
+			products: Array.from(this.basket.products),
+		};
+		if (localStorage && this.settings.storageKey) {
+			localStorage.setItem(this.settings.storageKey, JSON.stringify(state));
+		}
+	}
+
+  restoreState(): void {
+		if (!localStorage || !this.settings.storageKey) {
+			return;
+		}
+
+		try {
+			const state = localStorage.getItem(this.settings.storageKey);
+			if (!state) return;
+			const { products, contacts } = JSON.parse(state) as PersistedState;
+			this.userData = contacts;
+			this.clearBasket();
+			for (const product of products) {
+        this.selectProduct(product.id);
+				this.pushProduct2Basket();
+			}
+			this.notifyChanged(AppStateChanges.openBasket);
+			this.notifyChanged(AppStateChanges.order);
+		} catch (err) {
+			console.error('Failed to restore state:', err);
+		}
+	}
+
 }
 
 
