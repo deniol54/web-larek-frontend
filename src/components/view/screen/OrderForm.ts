@@ -1,5 +1,4 @@
 import { ModalScreen } from './ModalScreen';
-import { IClickableEvent } from '../../../types/base/View';
 import { cloneTemplate } from '../../../utils/html';
 import { settings } from '../../../utils/constants';
 
@@ -7,10 +6,9 @@ import { OrderData } from '../../../types/view/Partial/Order';
 import { OrderFormData, OrderFormSettings } from '../../../types/view/Screen/OrderForm';
 import { OrderView } from '../partial/Order';
 import { IChangeableEvent} from '../../../types/base/View';
-import { View } from '../../base/view';
 
 export class OrderFormScreen extends ModalScreen<
-	Partial<OrderData>,
+	OrderData,
 	OrderFormData,
 	OrderFormSettings
 > {
@@ -21,6 +19,7 @@ export class OrderFormScreen extends ModalScreen<
 			onChange: this.onFormChange.bind(this),
 		});
     this.nextButton = view.element.querySelector(settings.orderSettings.action);
+		this.nextButton.addEventListener('click', this.onSubmitForm.bind(this));
 		return view;
 	}
 
@@ -29,12 +28,13 @@ export class OrderFormScreen extends ModalScreen<
       this.settings.onChange(value);
 	}
 
-	set contacts(value: OrderData) {
-		this.modal.content = value;
-    this.nextButton.disabled = !(value.address.length > 0 && value.payment.length > 0);
+	protected onSubmitForm() {
+		this.settings.onNext();
 	}
 
-	// set total(total: string) {
-	// 	this.modal.message = `${SETTINGS.orderModal.totalLabel} ${total}`;
-	// }
+	set contacts(value: OrderData) {
+		this.modal.content = value;
+		console.log(this.modal);
+    this.nextButton.disabled = !(value.address.length > 0 && value.payment.length > 0);
+	}
 }

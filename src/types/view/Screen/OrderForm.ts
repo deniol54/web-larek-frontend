@@ -11,8 +11,7 @@ export interface OrderFormData {
 }
 
 export interface OrderFormSettings {
-	onChange: (data: OrderData) => void;
+	onChange: (data: Partial<OrderData& ContactsData>) => void;
 	onClose: () => void;
 	onNext: () => void;
-	onBack: () => void;
 }

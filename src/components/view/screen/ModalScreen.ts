@@ -45,7 +45,6 @@ export abstract class ModalScreen<
 			},
 			this.settings.onClose
 		);
-
 		this.element = this.modal.element;
 	}
 

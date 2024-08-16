@@ -150,6 +150,7 @@ export class ShopStateModel implements ShopState{
   setMessage(message: string | null, isError: boolean = false): void {
     this.modalMessage = message;
     this.isError = isError;
+    this.notifyChanged(AppStateChanges.setModalMessage);
   }
 
   protected validateContacts(contacts: Partial<UserData>): string | null {

@@ -13,9 +13,11 @@ import { BasketController } from './components/controller/Basket';
 import { ModalChange } from './types/model/ShopStateEmmiter';
 import { ProductScreen } from './components/view/screen/Product';
 import { ProductController } from './components/controller/Product';
-import { ProductCategory } from './types/model/ShopAPI';
+
 import { OrderFormScreen } from './components/view/screen/OrderForm';
 import { OrderController } from './components/controller/Order';
+import { ContactsFormScreen } from './components/view/screen/ContsctsForm';
+import { ContactsController } from './components/controller/Contacts';
 
 const api = new ShopAPI(CDN_URL, API_URL);
 const app = new AppStateEmitter(api, settings.appState, ShopStateModel);
@@ -25,6 +27,7 @@ const modal = {
 	[AppStateModals.basket]: new BasketScreen(new BasketController(app.model)),
 	[AppStateModals.product]: new ProductScreen(new ProductController(app.model)),
 	[AppStateModals.address]: new OrderFormScreen(new OrderController(app.model)),
+	[AppStateModals.contacts]: new ContactsFormScreen(new ContactsController(app.model)),
 };
 
 
@@ -33,6 +36,15 @@ app.on(AppStateChanges.openModal, ({ previous, current }: ModalChange) => {
 	main.page.isLocked = current !== AppStateModals.none;
 	if (previous !== AppStateModals.none) {
 		modal[previous].render({ isActive: false });
+	}
+});
+
+app.on(AppStateChanges.setModalMessage, () => {
+	if (app.model.openedModal !== AppStateModals.none) {
+		modal[app.model.openedModal].render({
+			message: app.model.modalMessage,
+			isError: app.model.isError,
+		});
 	}
 });
 
@@ -69,8 +81,16 @@ app.on(AppStateModals.address, () => {
 })
 
 app.on(AppStateChanges.orderData, () => {
-	modal[AppStateModals.address].render({
+	const currentModal = <Exclude<AppStateModals,AppStateModals.none>>app.model.openedModal;
+	modal[currentModal].render({
 		contacts:app.model.userData,
+		isActive: true,
+	})
+})
+
+app.on(AppStateModals.contacts, () => {
+	modal[AppStateModals.contacts].render({
+		contacts: app.model.userData,
 		isActive: true,
 	})
 })

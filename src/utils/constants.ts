@@ -75,7 +75,17 @@ export const settings = {
 		payment: '.button_alt',
 		activeButton: 'button_alt-active',
 		action: '.order__button',
+		message: '.form__errors',
 	},
+
+	contactsTemplate: '#contacts',
+	contactsSettings: {
+		email: 'input[name=email]',
+		phone: 'input[name=phone]',
+		action: '.button',
+		message: '.form__errors',
+	},
+
   appState: {
 		formatCurrency: (value: number) => `${value} руб.`,
 		storageKey: '__filmTickets',

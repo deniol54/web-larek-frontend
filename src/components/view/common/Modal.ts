@@ -11,6 +11,7 @@ export class ModalView<C> extends View<
 > {
 	// модальное окно, которое сейчас открыто, оно всегда одно
 	protected static _openedModal: ModalView<unknown> | null;
+	public modalMessageSelector: string;
 
 	protected init() {
 		// слушаем клик по иконке закрыть
@@ -20,6 +21,7 @@ export class ModalView<C> extends View<
 		);
 		// клик по оверлею тоже закрывает модальное окно
 		this.element.addEventListener('click', this.onCloseHandler.bind(this));
+		this.modalMessageSelector = this.settings.message;
 		// добавляем в подвал кнопки из настроек
 		// this.ensure(this.settings.footer).prepend(...this.settings.actions);
 	}
@@ -77,15 +79,15 @@ export class ModalView<C> extends View<
 	// Установка сообщения в модальное окно
 	set message(value: string | undefined) {
 		if (value) {
-			this.setValue(this.settings.message, value);
-			this.setVisibility(this.settings.message, true);
+			this.setValue(this.modalMessageSelector, value);
+			this.setVisibility(this.modalMessageSelector, true);
 		} else {
-			this.setVisibility(this.settings.message, false);
+			this.setVisibility(this.modalMessageSelector, false);
 		}
 	}
 
 	set isError(state: boolean) {
-		this.ensure(this.settings.message).classList.toggle(
+		this.ensure(this.modalMessageSelector).classList.toggle(
 			this.settings.messageErrorClass,
 			!!state
 		);
