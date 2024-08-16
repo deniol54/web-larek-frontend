@@ -5,7 +5,6 @@ import { API_URL, CDN_URL, settings } from './utils/constants';
 import { ShopStateModel } from './components/model/ShopState';
 import { MainScreen } from './components/view/screen/Main';
 import { MainController } from './components/controller/Main';
-import { CardData } from './types/view/Partial/Card';
 import { AppStateEmitter } from './components/model/ShopStateEmmiter';
 import { AppStateChanges, AppStateModals } from './types/model/ShopState';
 import { BasketScreen } from './components/view/screen/Basket';
@@ -18,6 +17,8 @@ import { OrderFormScreen } from './components/view/screen/OrderForm';
 import { OrderController } from './components/controller/Order';
 import { ContactsFormScreen } from './components/view/screen/ContsctsForm';
 import { ContactsController } from './components/controller/Contacts';
+import { SuccessScreen } from './components/view/screen/Success';
+import { ModalController } from './components/controller/Modal';
 
 const api = new ShopAPI(CDN_URL, API_URL);
 const app = new AppStateEmitter(api, settings.appState, ShopStateModel);
@@ -28,11 +29,11 @@ const modal = {
 	[AppStateModals.product]: new ProductScreen(new ProductController(app.model)),
 	[AppStateModals.address]: new OrderFormScreen(new OrderController(app.model)),
 	[AppStateModals.contacts]: new ContactsFormScreen(new ContactsController(app.model)),
+	[AppStateModals.success]: new SuccessScreen(new ModalController(app.model)),
 };
 
 
 app.on(AppStateChanges.openModal, ({ previous, current }: ModalChange) => {
-	console.log('New modal');
 	main.page.isLocked = current !== AppStateModals.none;
 	if (previous !== AppStateModals.none) {
 		modal[previous].render({ isActive: false });
@@ -104,20 +105,17 @@ app.on(AppStateChanges.order, () => {
 	})
 })
 
+app.on(AppStateModals.success, () => {
+	modal[AppStateModals.success].render({
+		content: {
+			title: settings.successModal.title,
+			description: settings.appState.formatCurrency(app.model.order.total),
+		},
+		isActive: true,
+	})
+})
+
 app.model.loadProducts().then(()=>{
   main.items = app.model.catalog.products;
 	app.model.restoreState();
 });
-
-// app.model.catalog.products.push({
-// 	price: 100,
-// 	id: '1',
-// 	title: 'dad',
-// 	category: ProductCategory.additional,
-// 	description: 'dsd',
-// 	image: 'D:\\Prog\\4course\fullstack\dev\web-larek-frontend\src\images\Subtract.png',
-
-// });
-// main.items = app.model.catalog.products;
-// app.model.basket.products.push(app.model.catalog.products[0]);
-

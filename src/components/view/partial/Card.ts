@@ -89,7 +89,6 @@ export class CardDataBasketView extends View<CardDataBasket, CardDataBasketSetti
 	}
 
 	onClickHandler(event: MouseEvent) {
-		console.log(this.settings.onClick)
 		this.settings.onClick({ event, item: this._item.id });
 	}
 

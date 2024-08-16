@@ -86,8 +86,19 @@ export const settings = {
 		message: '.form__errors',
 	},
 
+	messageTemplate: '#success',
+	messageSettings: {
+		title: '.order-success__title',
+		description: '.order-success__description',
+		action: '.order-success__close',
+	},
+	successModal: {
+		title: 'Заказ оформлен',
+	},
+
+
   appState: {
-		formatCurrency: (value: number) => `${value} руб.`,
+		formatCurrency: (value: number) => `Списано ${value} синапсов`,
 		storageKey: '__shopProducts',
 	},
 };

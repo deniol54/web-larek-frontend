@@ -33,7 +33,7 @@ export class ShopStateModel implements ShopState{
   constructor(protected api: IShopAPI, protected settings?: AppStateSettings) {}
 
   get basketTotal(): number {
-    return this.basket.basketCount;
+    return this.basket.basketPrice;
   }
 
   get isOrderReady(): boolean {
@@ -54,9 +54,15 @@ export class ShopStateModel implements ShopState{
 
   async orderProducts(): Promise<OrderResult> {
     try {
+      this.order = {
+        ...this.userData,
+        total: this.basket.basketPrice,
+        items: Array.from(this.basket.products.map(el=>el.id)),
+      }
       const result = await this.api.orderProducts(this.order);
-      this.basket.products.length = 0;
-      this.order.items.length = 0;
+      this.clearBasket();
+      this.persistState();
+			this.notifyChanged(AppStateChanges.openBasket);
       return result;
     }
     catch (error: unknown) {
@@ -76,7 +82,7 @@ export class ShopStateModel implements ShopState{
       this.basket.products.push(
         {
           ...this.selectedProduct,
-          index: this.basketTotal,
+          index: this.basket.basketCount,
         });
     }
     this.notifyChanged(AppStateChanges.openBasket);
@@ -144,8 +150,6 @@ export class ShopStateModel implements ShopState{
 		if (this.openedModal !== modal) {
 			this.openedModal = modal;
 			this.notifyChanged(AppStateChanges.openModal);
-      console.log(this.openedModal);
-      console.log(this.settings);
 		}
 	}
 

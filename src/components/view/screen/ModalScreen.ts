@@ -12,7 +12,6 @@ import { ModalScreenSettings } from '../../../types/view/Screen/ModalScreen';
  * Общая логика и структура модальных окон
  */
 export abstract class ModalScreen<
-	// H, // данные для заголовка
 	M, // внутренние данные для контента модального окна
 	C, // внешние данные для экрана
 	S extends ModalScreenSettings // настройки экрана (обработчики событий
@@ -40,7 +39,6 @@ export abstract class ModalScreen<
 
 		this.modal = this.getModalView(
 			{
-				// headerView: this.initHeader(),
 				contentView: this.initContent(),
 			},
 			this.settings.onClose

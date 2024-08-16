@@ -46,7 +46,11 @@ export class OrderView extends View<OrderData, OrderSettings> {
 	}
 
 	set payment(value: string) {
-    value === 'online' ? this._cardButton.classList.add(settings.orderSettings.activeButton) : this._cashButton.classList.add(settings.orderSettings.activeButton);
+    if(value.length > 0){
+      const curButton = value === 'online' ? this._cardButton : this._cashButton;
+      curButton.classList.add(settings.orderSettings.activeButton);
+      this._activeButton = curButton;
+    }
 	}
 
 	set address(value: string) {

@@ -34,7 +34,6 @@ export class OrderFormScreen extends ModalScreen<
 
 	set contacts(value: OrderData) {
 		this.modal.content = value;
-		console.log(this.modal);
     this.nextButton.disabled = !(value.address.length > 0 && value.payment.length > 0);
 	}
 }

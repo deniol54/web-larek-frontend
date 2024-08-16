@@ -9,7 +9,6 @@ import {
 } from '@/types/view/Screen/Main';
 import { ListView } from '../common/List';
 import { CardView } from '../partial/Card';
-// import { HeroView } from '../common/Hero';
 import { PageView } from '../partial/Page';
 import { CardData } from '@/types/view/Partial/Card';
 

@@ -7,13 +7,12 @@ export class ContactsController extends Controller<ShopState> {
 		this.model.fillUserData(value);
 	};
 	onNext = async () => {
-		// this.model.openModal(AppStateModals.contacts);
     const orderTotal = this.model.basket.basketPrice;
     if(this.model.isValidContacts() && this.model.isOrderReady) {
       const result = await this.model.orderProducts();
       if(orderTotal === result.total) {
         this.model.persistState();
-        // this.model.openModal()
+        this.model.openModal(AppStateModals.success);
       }
     }
 	};
