@@ -1,11 +1,11 @@
 import { Catalog, ProductBasket, UserData, Order, OrderResult,IShopAPI, Product } from './ShopAPI';
 
 export enum AppStateModals {
-	product = 'modal:product',
-	basket = 'modal:basket',
-  address = 'modal:address',
-	contacts = 'modal:contacts',
-	success = 'modal:success',
+	openProduct = 'modal:product',
+	openBasket = 'modal:basket',
+  openAddress = 'modal:address',
+	openContacts = 'modal:contacts',
+	openSuccess = 'modal:success',
 	none = 'modal:none',
 }
 
@@ -14,7 +14,7 @@ export enum AppStateChanges {
 	setModalMessage = 'change:modalMessage',
   selectProduct = 'change:selectedProduct',
   orderData = 'change:orderData',
-	openBasket = 'change:basket',
+	changeBasket = 'change:basket',
 	order = 'change:order',
 }
 
@@ -35,11 +35,11 @@ export interface ShopState {
 	modalMessage: string | null;
 	isError: boolean;
 
-  loadProducts(): Promise<void>;
-	orderProducts(): Promise<OrderResult>;
+  loadProducts(products: Product[]): void;
+	getOrder(): Order;
 
   selectProduct(id: string): void;
-	pushProduct2Basket(): void;
+	pushProductToBasket(): void;
 	clearBasket(): void;
   removeProduct(id: string): void;
 	fillUserData(contacts: Partial<UserData>): void;

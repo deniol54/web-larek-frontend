@@ -19,10 +19,12 @@ export class ProductScreen extends ModalScreen<
 
 
 	initContent() {
-		return new CardDataModalView(cloneTemplate(settings.cardModalTemplate), {
+		const view = new CardDataModalView(cloneTemplate(settings.cardModalTemplate), {
 			...settings.cardSettings,
       onClick: this.onRemoveProduct.bind(this),
 		});
+		this.nextButton = view.element.querySelector('.card__button');
+		return view;
 	}
 
 	protected onRemoveProduct({ item }: IClickableEvent<CardDataModal>) {
@@ -32,6 +34,8 @@ export class ProductScreen extends ModalScreen<
 
 	set product(value: CardDataModal) {
 		this.modal.content = value;
+		this.nextButton.disabled = !value.price;
+
 	}
 
 	set title(value: string) {

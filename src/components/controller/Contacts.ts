@@ -5,16 +5,10 @@ import { ContactsData } from '../../types/view/Partial/Contacts';
 export class ContactsController extends Controller<ShopState> {
 	onChange = (value: ContactsData) => {
 		this.model.fillUserData(value);
+    this.model.isValidContacts();
 	};
-	onNext = async () => {
-    const orderTotal = this.model.basket.basketPrice;
-    if(this.model.isValidContacts() && this.model.isOrderReady) {
-      const result = await this.model.orderProducts();
-      if(orderTotal === result.total) {
-        this.model.persistState();
-        this.model.openModal(AppStateModals.success);
-      }
-    }
+	onNext = () => {
+    this.model.openModal(AppStateModals.openSuccess);
 	};
 	onClose = () => {
 		this.model.openModal(AppStateModals.none);

@@ -25,11 +25,11 @@ const app = new AppStateEmitter(api, settings.appState, ShopStateModel);
 const main = new MainScreen(new MainController(app.model));
 
 const modal = {
-	[AppStateModals.basket]: new BasketScreen(new BasketController(app.model)),
-	[AppStateModals.product]: new ProductScreen(new ProductController(app.model)),
-	[AppStateModals.address]: new OrderFormScreen(new OrderController(app.model)),
-	[AppStateModals.contacts]: new ContactsFormScreen(new ContactsController(app.model)),
-	[AppStateModals.success]: new SuccessScreen(new ModalController(app.model)),
+	[AppStateModals.openBasket]: new BasketScreen(new BasketController(app.model)),
+	[AppStateModals.openProduct]: new ProductScreen(new ProductController(app.model)),
+	[AppStateModals.openAddress]: new OrderFormScreen(new OrderController(app.model)),
+	[AppStateModals.openContacts]: new ContactsFormScreen(new ContactsController(app.model)),
+	[AppStateModals.openSuccess]: new SuccessScreen(new ModalController(app.model)),
 };
 
 
@@ -45,68 +45,80 @@ app.on(AppStateChanges.setModalMessage, () => {
 		modal[app.model.openedModal].render({
 			message: app.model.modalMessage,
 			isError: app.model.isError,
+			isDisabled: app.model.isError,
 		});
 	}
 });
 
 
-app.on(AppStateChanges.openBasket, () => {
+app.on(AppStateChanges.changeBasket, () => {
 	main.counter = app.model.basket.basketCount;
-	modal[AppStateModals.basket].products = Array.from(
+	modal[AppStateModals.openBasket].products = Array.from(
 		app.model.basket.products
 	);
-	modal[AppStateModals.basket].total = String(app.model.basket.basketPrice);
+	modal[AppStateModals.openBasket].total = String(app.model.basket.basketPrice);
 });
 
-app.on(AppStateModals.basket, () => {
-	modal[AppStateModals.basket].render({
+app.on(AppStateModals.openBasket, () => {
+	modal[AppStateModals.openBasket].render({
 		products: app.model.basket.products,
 		total: String(app.model.basket.basketPrice),
 		isActive: true,
 	});
 });
 
-app.on(AppStateModals.product, () => {
-	modal[AppStateModals.product].render({
+app.on(AppStateModals.openProduct, () => {
+	modal[AppStateModals.openProduct].render({
 		product: app.model.selectedProduct,
 		isActive: true,
 	})
 })
 
 
-app.on(AppStateModals.address, () => {
-	modal[AppStateModals.address].render({
+app.on(AppStateModals.openAddress, () => {
+	modal[AppStateModals.openAddress].render({
 		contacts:app.model.userData,
 		isActive: true,
 	})
 })
 
 app.on(AppStateChanges.orderData, () => {
-	const currentModal = <Exclude<AppStateModals,AppStateModals.none>>app.model.openedModal;
-	modal[currentModal].render({
-		contacts:app.model.userData,
-		isActive: true,
-	})
-})
-
-app.on(AppStateModals.contacts, () => {
-	modal[AppStateModals.contacts].render({
-		contacts: app.model.userData,
-		isActive: true,
-	})
-})
-
-app.on(AppStateChanges.order, () => {
-	modal[AppStateModals.address].render({
+	modal[AppStateModals.openAddress].render({
 		contacts: app.model.userData,
 	});
-	modal[AppStateModals.contacts].render({
+	modal[AppStateModals.openContacts].render({
 		contacts: app.model.userData,
 	})
 })
 
-app.on(AppStateModals.success, () => {
-	modal[AppStateModals.success].render({
+app.on(AppStateModals.openContacts, () => {
+	modal[AppStateModals.openContacts].render({
+		contacts: app.model.userData,
+		isActive: true,
+	})
+})
+
+app.on(AppStateChanges.order, async () => {
+	try {
+		const orderTotal = app.model.basketTotal;
+		const result = await api.orderProducts(app.model.getOrder());
+		if(orderTotal === result.total) {
+			app.model.persistState();
+		}
+	}
+	catch (error: unknown) {
+		if (error instanceof Error) {
+			console.log(`Error: `,error.message);
+		}
+		if (typeof error === 'string') {
+			console.log(`Error: `, error)
+		}
+	}
+
+})
+
+app.on(AppStateModals.openSuccess, () => {
+	modal[AppStateModals.openSuccess].render({
 		content: {
 			title: settings.successModal.title,
 			description: settings.appState.formatCurrency(app.model.order.total),
@@ -115,7 +127,8 @@ app.on(AppStateModals.success, () => {
 	})
 })
 
-app.model.loadProducts().then(()=>{
-  main.items = app.model.catalog.products;
+api.getProducts().then((products)=>{
+  main.items = products;
+	app.model.loadProducts(products);
 	app.model.restoreState();
-});
+}).catch((err: string) => console.log(`Error: `, err));

@@ -44,38 +44,26 @@ export class ShopStateModel implements ShopState{
           this.userData.phone.length>0;
   }
 
-  async loadProducts(): Promise<void> {
+  loadProducts(products: Product[]): void {
     this.catalog.products.length = 0;
-    const products = await this.api.getProducts();
     products.forEach(el =>{
       this.catalog.products.push(el);
     })
   }
 
-  async orderProducts(): Promise<OrderResult> {
-    try {
+ getOrder(): Order {
       this.order = {
         ...this.userData,
         total: this.basket.basketPrice,
         items: Array.from(this.basket.products.map(el=>el.id)),
       }
-      const result = await this.api.orderProducts(this.order);
       this.clearBasket();
       this.persistState();
-			this.notifyChanged(AppStateChanges.openBasket);
-      return result;
-    }
-    catch (error: unknown) {
-      if (error instanceof Error) {
-				this.setMessage(error.message, true);
-			}
-			if (typeof error === 'string') {
-				this.setMessage(error, true);
-			}
-    }
+			this.notifyChanged(AppStateChanges.changeBasket);
+      return this.order;
   }
 
-  pushProduct2Basket() {
+  pushProductToBasket() {
     if (!this.basket.products.find(el => el.id === this.selectedProduct.id)){
       this.basket.basketCount++;
       this.basket.basketPrice += this.selectedProduct.price;
@@ -85,7 +73,7 @@ export class ShopStateModel implements ShopState{
           index: this.basket.basketCount,
         });
     }
-    this.notifyChanged(AppStateChanges.openBasket);
+    this.notifyChanged(AppStateChanges.changeBasket);
   }
 
   clearBasket(): void {
@@ -117,7 +105,7 @@ export class ShopStateModel implements ShopState{
       return el.id !== id;
     });
     this.basket.basketCount -=1;
-    this.notifyChanged(AppStateChanges.openBasket);
+    this.notifyChanged(AppStateChanges.changeBasket);
   }
 
   fillUserData(contacts: Partial<UserData>): void {
@@ -141,11 +129,13 @@ export class ShopStateModel implements ShopState{
 
   openModal(modal: AppStateModals): void {
 		switch (modal) {
-			case AppStateModals.contacts:
+			case AppStateModals.openContacts:
 				if (this.basket.basketCount === 0) {
 					throw new Error(`No tickets selected`);
 				}
 				break;
+      case AppStateModals.openSuccess:
+        this.notifyChanged(AppStateChanges.order);
 		}
 		if (this.openedModal !== modal) {
 			this.openedModal = modal;
@@ -206,10 +196,10 @@ export class ShopStateModel implements ShopState{
 			this.clearBasket();
 			for (const product of products) {
         this.selectProduct(product.id);
-				this.pushProduct2Basket();
+				this.pushProductToBasket();
 			}
-			this.notifyChanged(AppStateChanges.openBasket);
-			this.notifyChanged(AppStateChanges.order);
+			this.notifyChanged(AppStateChanges.changeBasket);
+			this.notifyChanged(AppStateChanges.orderData);
 		} catch (err) {
 			console.error('Failed to restore state:', err);
 		}
