@@ -72,7 +72,8 @@ export class CardDataModalView extends View<CardDataModal, CardSettings> {
 	}
 
 	set category(value: ProductCategory) {
-		this.element.querySelector('.card__category').classList.replace('card__category_other', 'card__category_'+ ProductCategoryReverse[value]);
+		const category = this.element.querySelector(this.settings.category);
+		category.classList.replace(category.classList[category.classList.length-1], 'card__category_'+ ProductCategoryReverse[value]);
 		this.setValue(this.settings.category, value);
 	}
 }

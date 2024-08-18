@@ -8,7 +8,7 @@ export class ContactsController extends Controller<ShopState> {
     this.model.isValidContacts();
 	};
 	onNext = () => {
-    this.model.openModal(AppStateModals.openSuccess);
+    this.model.Order();
 	};
 	onClose = () => {
 		this.model.openModal(AppStateModals.none);

@@ -104,6 +104,7 @@ app.on(AppStateChanges.order, async () => {
 		const result = await api.orderProducts(app.model.getOrder());
 		if(orderTotal === result.total) {
 			app.model.persistState();
+			app.model.openModal(AppStateModals.openSuccess);
 		}
 	}
 	catch (error: unknown) {

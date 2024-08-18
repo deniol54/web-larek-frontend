@@ -63,6 +63,10 @@ export class ShopStateModel implements ShopState{
       return this.order;
   }
 
+  Order(): void {
+    this.notifyChanged(AppStateChanges.order);
+  }
+
   pushProductToBasket() {
     if (!this.basket.products.find(el => el.id === this.selectedProduct.id)){
       this.basket.basketCount++;
@@ -134,8 +138,6 @@ export class ShopStateModel implements ShopState{
 					throw new Error(`No tickets selected`);
 				}
 				break;
-      case AppStateModals.openSuccess:
-        this.notifyChanged(AppStateChanges.order);
 		}
 		if (this.openedModal !== modal) {
 			this.openedModal = modal;

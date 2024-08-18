@@ -37,6 +37,7 @@ export interface ShopState {
 
   loadProducts(products: Product[]): void;
 	getOrder(): Order;
+	Order(): void;
 
   selectProduct(id: string): void;
 	pushProductToBasket(): void;
